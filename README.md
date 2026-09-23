@@ -1,10 +1,22 @@
 # Career Quest
 
-FastAPI backend and connected React/Vite frontend for the Career Quest employee
-development project. The backend implements the four steps in
-`Person1_Backend_Prompts.md`; `frontend/` provides employee profiles,
-recommendations, activity completion, HR dashboards, and data imports. The
-original three task documents are unchanged.
+Career Quest helps employees choose development activities for their next career
+grade and gives HR a company-wide view of skill gaps and participation. It combines
+deterministic, explainable recommendations with optional AI-generated explanations.
+Employees can see why an activity fits, mark it completed, and immediately see
+updated skills and recommendations.
+
+The connected React/Vite frontend and FastAPI backend provide:
+
+- Employee profiles, skill levels, next-grade gaps, and participation history.
+- Up to three eligible activities ranked by skill benefit, criticality, and history.
+- English, Russian, and Kazakh explanations with a deterministic fallback.
+- Completion tracking with capped skill gains and duplicate-completion protection.
+- Aggregate HR skill gaps, participation counts, and an unranked list of employees
+  without a next step.
+- Validated employee JSON and history JSON/CSV imports for additional judge data.
+- Dataset scenario discovery, an executable API smoke test, and automated backend
+  and frontend integration checks.
 
 The supplied dataset is bundled in `data/`: **200 employees, 60 skills, 32 role
 profiles, 40 activities, and 2,743 history records**. It is synthetic, as documented
@@ -13,20 +25,19 @@ fixtures for isolated tests. `/health` reports `synthetic_data: true` for both.
 
 ## Run on Windows / PowerShell
 
-Clone the repository and start the backend from its root (tested with Python 3.14):
+Requirements: Python 3.11 or later and Node.js with npm compatible with Vite 6
+(this workspace was verified with Python 3.14, Node.js 24, and npm 11).
+Open a terminal in the extracted project or repository root, where
+`requirements-dev.txt` is located, then start the backend:
 
 ```powershell
-git clone https://github.com/BAITC-Hacks/hack-7168a80e-nuvexa.git
-cd hack-7168a80e-nuvexa
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 .\.venv\Scripts\python.exe -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
 ```
 
-If you already cloned the repository, open a terminal in its root and skip the
-clone commands. No PowerShell activation script is needed. If `.venv` already
-exists, skip its creation. For runtime dependencies alone, use `requirements.txt`
-instead.
+No PowerShell activation script is needed. If `.venv` already exists, skip its
+creation. For runtime dependencies alone, use `requirements.txt` instead.
 
 Open [interactive API docs](http://127.0.0.1:8000/docs) or
 [health](http://127.0.0.1:8000/health). The machine-readable contract is
@@ -75,7 +86,7 @@ is `EMP_001`. See [frontend setup](frontend/README.md).
 
 ## Dataset and configuration
 
-The committed `data/` directory contains the four supplied synthetic data files:
+The bundled `data/` directory contains the four supplied synthetic data files:
 
 - `employees.json`: object with `meta` and `employees`.
 - `skills.json`: object with `meta`, `proficiency_scale`, `skills`, and `role_profiles`.
@@ -83,10 +94,8 @@ The committed `data/` directory contains the four supplied synthetic data files:
 - `activity_history.csv`: the ten columns specified in the task documents.
 
 The three supplied READMEs (`README.md`, `README.ru.md`, and `README.kz.md`) are
-committed alongside them, for seven bundled files in total. The original source
-files were preserved separately before adding `meta.synthetic: true` to the
-working JSON copies. Employee, skill, event, and history records are preserved.
-A fresh clone includes this dataset and needs no separate download.
+included alongside them, for seven bundled files in total. The JSON metadata
+marks the data as synthetic. This copy needs no separate dataset download.
 
 The default is `data/` when that directory exists, otherwise `sample_data/`.
 An incomplete `data/` directory fails startup with a missing-file error instead of
@@ -137,6 +146,13 @@ leaving room within the ten-second request budget. No retries are made. Errors,
 empty responses, unsupported numeric literals, or insufficient explanation factors
 fall back to templates. These checks are heuristics, not a proof of factual accuracy.
 Leave the key empty when strictly deterministic wording is required.
+
+Backend variables are listed in the root `.env.example`: `DATA_DIR`,
+`CORS_ORIGINS`, `NVIDIA_API_KEY`, `LLM_API_KEY`, `LLM_BASE_URL`, `LLM_MODEL`, and
+`LLM_TIMEOUT_SECONDS`. Frontend variables are in `frontend/.env.example`:
+`VITE_USE_MOCK_DATA`, `VITE_API_BASE_URL`, and `VITE_DEFAULT_EMPLOYEE_ID`.
+`CAREER_QUEST_TEST_API_URL` is an optional shell environment variable for the smoke
+script and frontend integration tests; these test tools do not load `.env` files.
 
 ## API handoff for the frontend
 
@@ -240,13 +256,68 @@ negative scores; these are relative rankings, not probabilities or ratings.
 Ties use `event_id` for reproducibility. Completion applies the same skill caps
 without ever reducing an employee's existing level.
 
-## Verify and demo
+## How to test and demonstrate the solution
+
+Discover manual cases from the supplied dataset, from the project root:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/find_test_scenarios.py
+```
+
+The scanner reads the raw assessment files and prints up to three matches per
+category. `--json` provides machine-readable output; `--data-dir PATH` selects
+another dataset. It uses the largest positive required-minus-current gap to
+identify the lowest relative skill, with ties allowed.
+
+In the bundled dataset, **E0099** matches the gap-versus-history case: the
+communication gap is **3** (level 1 versus required 4), the critical HR analytics
+gap is **1** (2 versus 3), and two records show no-show/dropout for `EV_008`, which
+develops communication. There are **no exact matches** for the requested
+new-hire (tenure <=3 months with only onboarding/empty history) or near-grade
+ceiling (total next-grade gap <=2) cases. The scanner reports that explicitly.
+It does not substitute invented employees or loosen the criteria. Its assessment
+gaps can differ from the API's current gaps after completed-history reconciliation.
+
+To reproduce the full flow, start the backend and frontend as above. Open
+`/employee/E0099`, inspect the recommendations, complete one activity, and verify
+the updated skills and history. Visit `/hr`, then use `/import` to load additional
+profiles or history in the documented schemas. `E0050` is a Lead employee and
+demonstrates the valid empty-recommendation state, not a near-ceiling match.
+
+For the automated smoke test, start a disposable backend on another port in a
+separate root terminal, with optional LLM keys left empty for deterministic checks:
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn backend.main:app --host 127.0.0.1 --port 18001
+```
+
+Then run from the project root in a test terminal:
+
+```powershell
+.\.venv\Scripts\python.exe scripts/e2e_smoke_test.py E0099 --base-url http://127.0.0.1:18001
+.\.venv\Scripts\python.exe scripts/e2e_smoke_test.py E0050 --base-url http://127.0.0.1:18001
+```
+
+The smoke test checks the profile, non-placeholder rationale text, distinct
+explanation-factor keywords in en/ru/kk, recommendations in under ten seconds,
+completion with correct capped gains, refreshed skills/history, removal of the
+completed activity (except repeatable `EV_036`), and all three HR response shapes.
+It prints PASS/FAIL for each check and exits nonzero on failure. Empty
+recommendations explicitly skip completion; an explanation keyword warning is
+diagnostic and does not by itself fail the run.
+
+The base URL defaults to `CAREER_QUEST_TEST_API_URL` if exported, otherwise
+`http://localhost:8000`; `--base-url` overrides it. Use `--data-dir` when the server
+uses a different dataset, because the script reads the matching local event
+catalog to verify gain caps. **The test completes the first recommended activity
+and changes server memory.** Restart that backend to reset it. For repeatable
+initial conditions, restart before a new full demo or frontend integration run.
 
 Backend checks from the project root:
 
 ```powershell
 .\.venv\Scripts\python.exe -m pytest -q
-.\.venv\Scripts\python.exe -m ruff check backend tests
+.\.venv\Scripts\python.exe -m ruff check backend tests scripts
 ```
 
 Frontend checks from `frontend/`:
@@ -285,7 +356,20 @@ To use the small fixtures instead, set `DATA_DIR=sample_data` and restart. Those
 fixtures use `EMP_001` through `EMP_006`; their demo scenarios are documented in
 `sample_data/README.md`. They are separate from the supplied `E0001`–`E0200` IDs.
 
-## Implementation and limits
+## Technologies and architecture
+
+The backend uses Python, FastAPI, Pydantic, pandas, HTTPX, python-dotenv, and
+Uvicorn. The frontend uses JavaScript, React 18, Vite 6, and plain CSS. Tests use
+pytest/pytest-asyncio and Node's built-in test runner; Ruff checks Python code.
+There is no database or mandatory external service. Optional AI wording uses an
+HTTP chat-completions API with the configured provider/model; the configured
+default is NVIDIA's endpoint with `meta/llama-3.1-8b-instruct`.
+
+The data flow is: JSON/CSV files or validated imports → in-memory `DataStore` →
+current skills reconstructed from assessments and eligible completed history →
+next-grade gaps → eligible activities and deterministic scores → optional LLM or
+template explanations → API responses → employee/HR screens. Completing an
+activity records history, recomputes skills, and refreshes recommendations.
 
 `backend/models.py` defines dataset schemas. `data_store.py` validates and indexes
 JSON plus a pandas history DataFrame; mutations are protected by a process-local
@@ -294,8 +378,25 @@ calls. `rationale_generator.py` supplies optional HTTP-based explanation text.
 `main.py` owns the application lifespan, shared dependencies, and routes;
 `api_models.py` defines the public contracts.
 
-This is the requested hackathon backend, with no database persistence,
+`frontend/src/lib/api.js` owns HTTP requests, errors, and 12-second timeouts;
+`lib/data.js` selects the live client or standalone mocks. The page components
+render employee, HR, and import workflows. `scripts/` contains Person 3's scenario
+scanner and live API smoke test, while `tests/` and `frontend/tests/` cover
+isolated logic and integrated flows. The three original task documents remain
+as implementation references.
+
+## Limitations and deployment
+
+This hackathon application has no database persistence,
 authentication, employee/HR authorization, production rate limits, or deployed
-service. Keep the default loopback binding for local work. Production deployment
-requires those controls and a shared transactional datastore. The supplied
-dataset loads locally; live inference still needs verification with API credentials.
+service URL recorded in this repository. Use the local links above. Keep the
+default loopback binding for local work. Production deployment requires those
+controls and a shared transactional datastore. Imports and completions reset on
+restart and are not shared across workers; run one backend worker.
+
+The recommendation target is the next grade in the current role, not a career-goal
+role change. The dataset and snapshot date are fixed; past sessions may cease to
+qualify if that date changes. Some requested manual-case categories are absent
+from the supplied data. Explanation checks are heuristic, and live external
+inference still needs verification with credentials. Automated frontend checks
+exercise the HTTP client and imports, not browser rendering or accessibility.

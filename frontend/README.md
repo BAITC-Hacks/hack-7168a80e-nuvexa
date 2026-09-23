@@ -6,19 +6,16 @@ dashboards, and employee/history imports.
 
 ## Run locally
 
-Clone the full repository and start the backend from its root in one PowerShell
+Open the project folder and start the backend from its root in one PowerShell
 terminal (tested with Python 3.14):
 
 ```powershell
-git clone https://github.com/BAITC-Hacks/hack-7168a80e-nuvexa.git
-cd hack-7168a80e-nuvexa
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-dev.txt
 .\.venv\Scripts\python.exe -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
 ```
 
-For an existing checkout, open a terminal in the repository root and skip the
-clone commands and any setup already completed. See the [project README](../README.md)
+Skip any setup already completed. See the [project README](../README.md)
 for backend configuration. Keep this terminal running. Open a second terminal in
 the repository root:
 
