@@ -1,0 +1,99 @@
+{
+  "meta": {
+    "synthetic": true,
+    "snapshot_date": "2026-10-01",
+    "description": "Invented demo profiles; not the Halyk Bank hackathon starter dataset."
+  },
+  "employees": [
+    {
+      "employee_id": "EMP_001",
+      "full_name": "Alex Demo",
+      "department": "Demo Analytics",
+      "role": "Data Analyst",
+      "grade": "Middle",
+      "manager_id": "EMP_004",
+      "hire_date": "2024-10-01",
+      "tenure_months": 24,
+      "work_format": "hybrid",
+      "preferred_language": "en",
+      "career_goal": {"target_role": "Data Analyst", "target_grade": "Senior"},
+      "skills": {"SK_SQL": 3, "SK_PYTHON": 3, "SK_ANALYTICS": 4, "SK_COMMUNICATION": 1, "SK_LEADERSHIP": 2},
+      "last_review_date": "2026-09-15"
+    },
+    {
+      "employee_id": "EMP_002",
+      "full_name": "Dana Demo",
+      "department": "Demo Analytics",
+      "role": "Data Analyst",
+      "grade": "Junior",
+      "manager_id": "EMP_004",
+      "hire_date": "2026-09-01",
+      "tenure_months": 1,
+      "work_format": "office",
+      "preferred_language": "kk",
+      "career_goal": {"target_role": "Data Analyst", "target_grade": "Middle"},
+      "skills": {"SK_SQL": 1, "SK_PYTHON": 1, "SK_ANALYTICS": 1, "SK_COMMUNICATION": 1, "SK_LEADERSHIP": 0},
+      "last_review_date": "2026-09-30"
+    },
+    {
+      "employee_id": "EMP_003",
+      "full_name": "Mira Demo",
+      "department": "Demo Analytics",
+      "role": "Data Analyst",
+      "grade": "Senior",
+      "manager_id": "EMP_004",
+      "hire_date": "2021-10-01",
+      "tenure_months": 60,
+      "work_format": "remote",
+      "preferred_language": "ru",
+      "career_goal": {"target_role": "Data Analyst", "target_grade": "Lead"},
+      "skills": {"SK_SQL": 5, "SK_PYTHON": 5, "SK_ANALYTICS": 5, "SK_COMMUNICATION": 5, "SK_LEADERSHIP": 3},
+      "last_review_date": "2026-09-15"
+    },
+    {
+      "employee_id": "EMP_004",
+      "full_name": "Robin Demo",
+      "department": "Demo Analytics",
+      "role": "Data Analyst",
+      "grade": "Lead",
+      "manager_id": null,
+      "hire_date": "2018-10-01",
+      "tenure_months": 96,
+      "work_format": "hybrid",
+      "preferred_language": "en",
+      "career_goal": null,
+      "skills": {"SK_SQL": 5, "SK_PYTHON": 5, "SK_ANALYTICS": 5, "SK_COMMUNICATION": 5, "SK_LEADERSHIP": 5},
+      "last_review_date": "2026-09-15"
+    },
+    {
+      "employee_id": "EMP_005",
+      "full_name": "Sam Demo",
+      "department": "Demo Reporting",
+      "role": "Data Analyst",
+      "grade": "Junior",
+      "manager_id": "EMP_004",
+      "hire_date": "2026-04-01",
+      "tenure_months": 6,
+      "work_format": "remote",
+      "preferred_language": "ru",
+      "career_goal": null,
+      "skills": {"SK_SQL": 2, "SK_PYTHON": 1, "SK_ANALYTICS": 1, "SK_COMMUNICATION": 2, "SK_LEADERSHIP": 0},
+      "last_review_date": "2026-09-20"
+    },
+    {
+      "employee_id": "EMP_006",
+      "full_name": "Kai Demo",
+      "department": "Demo Reporting",
+      "role": "Data Analyst",
+      "grade": "Middle",
+      "manager_id": "EMP_004",
+      "hire_date": "2023-10-01",
+      "tenure_months": 36,
+      "work_format": "office",
+      "preferred_language": "kk",
+      "career_goal": {"target_role": "Data Analyst", "target_grade": "Senior"},
+      "skills": {"SK_SQL": 3, "SK_PYTHON": 2, "SK_ANALYTICS": 3, "SK_COMMUNICATION": 3, "SK_LEADERSHIP": 1},
+      "last_review_date": "2026-09-20"
+    }
+  ]
+}

@@ -1,7 +1,13 @@
 import React from 'react';
+import { defaultEmployeeId } from '../lib/data.js';
 
 export function Shell({ path, navigate, children }) {
-  const [employeeId, setEmployeeId] = React.useState('EMP_001');
+  const [employeeId, setEmployeeId] = React.useState(defaultEmployeeId);
+  React.useEffect(() => {
+    const match = path.match(/^\/employee\/([^/]+)$/);
+    if (match) setEmployeeId(decodeURIComponent(match[1]));
+    else if (path === '/') setEmployeeId(defaultEmployeeId);
+  }, [path]);
   const current = path.startsWith('/hr') ? 'hr' : path.startsWith('/import') ? 'import' : 'employee';
   const jump = event => { event.preventDefault(); if (employeeId.trim()) navigate(`/employee/${encodeURIComponent(employeeId.trim())}`); };
   return <div className="app-shell">

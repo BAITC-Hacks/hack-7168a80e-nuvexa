@@ -16,6 +16,7 @@ const recs = {
   ],
 };
 const skillNames = { communication: 'Communication', 'customer-advisory': 'Customer advisory', 'risk-awareness': 'Risk awareness', 'data-literacy': 'Data literacy', collaboration: 'Collaboration' };
+export const mockGetSkills = async () => Object.entries(skillNames).map(([skill_id, name]) => ({ skill_id, name }));
 
 export const mockGetEmployee = async id => { await delay(250); const value = employees[id]; if (!value) throw new Error(`Employee ${id} was not found in demo data. Try EMP_001 or EMP_002.`); return structuredClone(value); };
 export const mockGetRecommendations = async id => { await delay(750); if (!employees[id]) throw new Error('Employee not found.'); return { employee_id: id, recommendations: structuredClone(recs[id] || []) }; };
@@ -25,7 +26,7 @@ export const mockCompleteActivity = async (id, eventId) => {
   for (const skill of recommendation.closes_skills) employee.skills[skill] = Math.min(5, (employee.skills[skill] || 0) + (skill === 'data-literacy' ? 2 : 1));
   employee.activity_history.unshift({ record_id: `ACT_${Date.now()}`, event_id: eventId, event_title: recommendation.title, date: new Date().toISOString().slice(0, 10), status: 'completed', score: 100, feedback_rating: 5 });
   recs[id] = recs[id].filter(item => item.event_id !== eventId);
-  return { employee, recommendations: { employee_id: id, recommendations: structuredClone(recs[id]) } };
+  return { employee_id: id, event_id: eventId, skills: structuredClone(employee.skills), recommendations: structuredClone(recs[id]) };
 };
 export const mockGetHrSkillGaps = async () => { await delay(450); return [
   { skill_id: 'data-literacy', skill_name: 'Data literacy', total_gap: 84, employees_affected: 31 }, { skill_id: 'customer-advisory', skill_name: 'Customer advisory', total_gap: 69, employees_affected: 28 }, { skill_id: 'communication', skill_name: 'Communication', total_gap: 55, employees_affected: 24 }, { skill_id: 'risk-awareness', skill_name: 'Risk awareness', total_gap: 42, employees_affected: 19 }, { skill_id: 'collaboration', skill_name: 'Collaboration', total_gap: 34, employees_affected: 16 },
@@ -37,7 +38,8 @@ export const mockGetHrParticipationStats = async () => { await delay(550); retur
 export const mockImportData = async payload => {
   await delay(500);
   const isEmployees = payload.type === 'employees' || Array.isArray(payload.employees);
-  const rows = isEmployees ? (payload.employees || payload.records || []) : (payload.activity_history || payload.records || []);
+  const rows = typeof payload.data === 'string' ? parseMockCsv(payload.data)
+    : payload.data || (isEmployees ? payload.employees : payload.history || payload.activity_history) || payload.records || [];
   if (isEmployees) {
     for (const row of rows) {
       employees[row.employee_id] = { ...structuredClone(row), activity_history: row.activity_history || [] };
@@ -46,10 +48,39 @@ export const mockImportData = async payload => {
   } else {
     for (const row of rows) {
       const employee = employees[row.employee_id];
-      if (employee) employee.activity_history.unshift({ ...row, event_title: row.event_title || row.event_id });
+      if (employee) {
+        employee.activity_history = employee.activity_history.filter(item => item.record_id !== row.record_id);
+        employee.activity_history.unshift({ ...row, event_title: row.event_title || row.event_id });
+      }
     }
   }
-  return { imported: rows.length, count: rows.length };
+  return { employees_imported: isEmployees ? rows.length : 0, history_imported: isEmployees ? 0 : rows.length, message: 'Data imported into the mock demo.' };
 };
+
+// The live adapter sends CSV unchanged for the backend's strict parser. This
+// small reader supports CSV imports when explicitly using the standalone demo.
+function parseMockCsv(text) {
+  const rows = []; let row = [], cell = '', quoted = false;
+  const input = text.replace(/^\uFEFF/, '');
+  for (let i = 0; i < input.length; i++) {
+    const c = input[i];
+    if (c === '"') {
+      if (quoted && input[i + 1] === '"') { cell += '"'; i++; }
+      else quoted = !quoted;
+    } else if (c === ',' && !quoted) { row.push(cell); cell = ''; }
+    else if ((c === '\n' || c === '\r') && !quoted) {
+      if (c === '\r' && input[i + 1] === '\n') i++;
+      row.push(cell); if (row.some(value => value !== '')) rows.push(row);
+      row = []; cell = '';
+    } else cell += c;
+  }
+  if (quoted) throw new Error('CSV contains an unclosed quoted field.');
+  if (row.length || cell) { row.push(cell); rows.push(row); }
+  const headers = rows.shift() || [];
+  return rows.map(values => {
+    if (values.length !== headers.length) throw new Error('CSV row has an incorrect number of fields.');
+    return Object.fromEntries(headers.map((key, index) => [key, values[index] === '' ? null : values[index]]));
+  });
+}
 export const getSkillName = id => skillNames[id] || id.replaceAll('-', ' ').replace(/\b\w/g, c => c.toUpperCase());
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));

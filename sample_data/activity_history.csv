@@ -1,0 +1,15 @@
+record_id,employee_id,event_id,date,due_date,status,completion_pct,score,feedback_rating,assigned_by
+REC_0001,EMP_001,EV_008,2026-08-20,,completed,100,88,4,manager
+REC_0002,EMP_001,EV_003,2026-08-25,,declined,0,,,self
+REC_0003,EMP_001,EV_009,2026-09-02,,no_show,0,,,manager
+REC_0004,EMP_001,EV_010,2026-09-10,,dropped,30,,2,self
+REC_0005,EMP_001,EV_036,2026-09-17,,completed,100,,4,self
+REC_0006,EMP_002,EV_004,2026-09-03,2026-09-10,completed,100,100,4,hr
+REC_0007,EMP_003,EV_001,2026-09-05,,completed,100,95,5,self
+REC_0008,EMP_003,EV_011,2026-09-25,2026-10-15,in_progress,50,,,self
+REC_0009,EMP_004,EV_004,2026-09-01,2026-09-10,completed,100,100,,hr
+REC_0010,EMP_005,EV_002,2026-09-20,2026-10-10,in_progress,40,,,self
+REC_0011,EMP_005,EV_004,2026-09-01,2026-09-15,overdue,20,,,hr
+REC_0012,EMP_006,EV_003,2026-09-07,,declined,0,,,self
+REC_0013,EMP_006,EV_008,2026-09-08,,completed,100,82,4,manager
+REC_0014,EMP_006,EV_009,2026-09-15,,no_show,0,,,self

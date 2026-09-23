@@ -1,0 +1,28 @@
+{
+  "meta": {
+    "synthetic": true,
+    "snapshot_date": "2026-10-01",
+    "description": "Invented demo skills and profiles; not official promotion requirements."
+  },
+  "proficiency_scale": {
+    "0": "No demonstrated proficiency",
+    "1": "Beginner",
+    "2": "Basic independent practice",
+    "3": "Proficient",
+    "4": "Advanced",
+    "5": "Expert"
+  },
+  "skills": [
+    {"skill_id": "SK_SQL", "name": "SQL", "type": "hard", "category": "Data", "description": "Query, join, and optimize relational data."},
+    {"skill_id": "SK_PYTHON", "name": "Python", "type": "hard", "category": "Programming", "description": "Use Python to automate analysis and data preparation."},
+    {"skill_id": "SK_ANALYTICS", "name": "Analytical reasoning", "type": "hard", "category": "Data", "description": "Choose analytical methods and interpret findings."},
+    {"skill_id": "SK_COMMUNICATION", "name": "Communication", "type": "soft", "category": "Collaboration", "description": "Explain findings clearly and listen to stakeholders."},
+    {"skill_id": "SK_LEADERSHIP", "name": "Leadership", "type": "soft", "category": "Management", "description": "Coach colleagues and coordinate shared delivery."}
+  ],
+  "role_profiles": [
+    {"role": "Data Analyst", "grade": "Junior", "required_skills": {"SK_SQL": 1, "SK_PYTHON": 1, "SK_ANALYTICS": 1, "SK_COMMUNICATION": 1, "SK_LEADERSHIP": 0}, "critical_skills": ["SK_SQL"]},
+    {"role": "Data Analyst", "grade": "Middle", "required_skills": {"SK_SQL": 3, "SK_PYTHON": 2, "SK_ANALYTICS": 2, "SK_COMMUNICATION": 3, "SK_LEADERSHIP": 1}, "critical_skills": ["SK_SQL", "SK_ANALYTICS"]},
+    {"role": "Data Analyst", "grade": "Senior", "required_skills": {"SK_SQL": 4, "SK_PYTHON": 4, "SK_ANALYTICS": 4, "SK_COMMUNICATION": 4, "SK_LEADERSHIP": 2}, "critical_skills": ["SK_SQL", "SK_PYTHON"]},
+    {"role": "Data Analyst", "grade": "Lead", "required_skills": {"SK_SQL": 5, "SK_PYTHON": 5, "SK_ANALYTICS": 5, "SK_COMMUNICATION": 5, "SK_LEADERSHIP": 4}, "critical_skills": ["SK_LEADERSHIP", "SK_COMMUNICATION"]}
+  ]
+}

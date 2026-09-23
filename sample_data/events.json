@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "synthetic": true,
+    "snapshot_date": "2026-10-01",
+    "description": "Invented demo activities and dates; none are real event bookings."
+  },
+  "events": [
+    {
+      "event_id": "EV_001", "title": "SQL query optimization lab", "description": "Practice efficient queries with a sample analytics database.",
+      "type": "workshop", "format": "online", "duration_hours": 3, "mandatory": false,
+      "target_roles": ["Data Analyst"], "target_grades": ["Junior", "Middle", "Senior"],
+      "develops_skills": [{"skill_id": "SK_SQL", "gain": 1, "max_level": 5}],
+      "prerequisites": {"SK_SQL": 1}, "upcoming_sessions": ["2026-10-05", "2026-11-05"]
+    },
+    {
+      "event_id": "EV_002", "title": "Python for everyday analysis", "description": "Complete guided exercises for reusable analysis scripts.",
+      "type": "course", "format": "self_paced", "duration_hours": 5, "mandatory": false,
+      "target_roles": ["Data Analyst"], "target_grades": ["Junior", "Middle", "Senior"],
+      "develops_skills": [{"skill_id": "SK_PYTHON", "gain": 1, "max_level": 5}],
+      "prerequisites": {}, "upcoming_sessions": []
+    },
+    {
+      "event_id": "EV_003", "title": "Presenting analytical findings", "description": "Practice explaining a technical result to a mixed audience.",
+      "type": "workshop", "format": "offline", "duration_hours": 4, "mandatory": false,
+      "target_roles": ["Data Analyst"], "target_grades": ["Junior", "Middle", "Senior"],
+      "develops_skills": [{"skill_id": "SK_COMMUNICATION", "gain": 2, "max_level": 4}],
+      "prerequisites": {}, "upcoming_sessions": ["2026-10-12"]
+    },
+    {
+      "event_id": "EV_004", "title": "Mandatory onboarding and compliance", "description": "Review the fictional organization's onboarding rules.",
+      "type": "compliance", "format": "self_paced", "duration_hours": 1, "mandatory": true,
+      "target_roles": ["Data Analyst"], "target_grades": ["Junior", "Middle", "Senior", "Lead"],
+      "develops_skills": [], "prerequisites": {}, "upcoming_sessions": []
+    },
+    {
+      "event_id": "EV_005", "title": "Advanced Python analytics", "description": "Apply advanced Python techniques after mastering the prerequisites.",
+      "type": "course", "format": "online", "duration_hours": 6, "mandatory": false,
+      "target_roles": ["Data Analyst"], "target_grades": ["Middle", "Senior"],
+      "develops_skills": [{"skill_id": "SK_PYTHON", "gain": 1, "max_level": 5}, {"skill_id": "SK_ANALYTICS", "gain": 1, "max_level": 5}],
+      "prerequisites": {"SK_PYTHON": 4}, "upcoming_sessions": ["2026-10-15"]
+    },
+    {
+      "event_id": "EV_006", "title": "SQL foundations refresher", "description": "Review beginner SQL; this activity cannot raise SQL above level two.",
+      "type": "course", "format": "self_paced", "duration_hours": 2, "mandatory": false,
+      "target_roles": ["Data Analyst"], "target_grades": ["Junior", "Middle", "Senior"],
+      "develops_skills": [{"skill_id": "SK_SQL", "gain": 1, "max_level": 2}],
+      "prerequisites": {}, "upcoming_sessions": []
+    },
+    {
+      "event_id": "EV_007", "title": "Expired SQL seminar", "description": "A past session retained to demonstrate date-based eligibility filtering.",
+      "type": "seminar", "format": "online", "duration_hours": 2, "mandatory": false,
+      "target_roles": ["Data Analyst"], "target_grades": ["Junior", "Middle", "Senior"],
+      "develops_skills": [{"skill_id": "SK_SQL", "gain": 1, "max_level": 5}],
+      "prerequisites": {}, "upcoming_sessions": ["2026-09-15"]
+    },
+    {
+      "event_id": "EV_008", "title": "SQL query review", "description": "Review and improve queries with a mentor.",
+      "type": "mentoring", "format": "offline", "duration_hours": 2, "mandatory": false,
+      "target_roles": ["Data Analyst"], "target_grades": ["Junior", "Middle", "Senior"],
+      "develops_skills": [{"skill_id": "SK_SQL", "gain": 1, "max_level": 4}],
+      "prerequisites": {"SK_SQL": 1}, "upcoming_sessions": ["2026-10-08"]
+    },
+    {
+      "event_id": "EV_009", "title": "Stakeholder conversations", "description": "Practice asking clear questions and summarizing decisions.",
+      "type": "workshop", "format": "online", "duration_hours": 2, "mandatory": false,
+      "target_roles": ["Data Analyst"], "target_grades": ["Junior", "Middle", "Senior"],
+      "develops_skills": [{"skill_id": "SK_COMMUNICATION", "gain": 1, "max_level": 5}],
+      "prerequisites": {}, "upcoming_sessions": ["2026-10-09"]
+    },
+    {
+      "event_id": "EV_010", "title": "Data storytelling practice", "description": "Explain a chart in clear language and discuss audience feedback.",
+      "type": "workshop", "format": "offline", "duration_hours": 3, "mandatory": false,
+      "target_roles": ["Data Analyst"], "target_grades": ["Junior", "Middle", "Senior"],
+      "develops_skills": [{"skill_id": "SK_COMMUNICATION", "gain": 1, "max_level": 5}, {"skill_id": "SK_ANALYTICS", "gain": 1, "max_level": 4}],
+      "prerequisites": {}, "upcoming_sessions": ["2026-10-16"]
+    },
+    {
+      "event_id": "EV_011", "title": "Coaching and team leadership", "description": "Practice coaching conversations and plan a small team initiative.",
+      "type": "course", "format": "self_paced", "duration_hours": 4, "mandatory": false,
+      "target_roles": ["Data Analyst"], "target_grades": ["Junior", "Middle", "Senior"],
+      "develops_skills": [{"skill_id": "SK_LEADERSHIP", "gain": 1, "max_level": 5}],
+      "prerequisites": {"SK_COMMUNICATION": 2}, "upcoming_sessions": []
+    },
+    {
+      "event_id": "EV_036", "title": "Recurring communication club", "description": "Repeatable short speaking practice with peer feedback.",
+      "type": "club", "format": "online", "duration_hours": 1, "mandatory": false,
+      "target_roles": ["Data Analyst"], "target_grades": ["Junior", "Middle", "Senior", "Lead"],
+      "develops_skills": [{"skill_id": "SK_COMMUNICATION", "gain": 1, "max_level": 5}],
+      "prerequisites": {}, "upcoming_sessions": ["2026-10-01", "2026-10-08", "2026-10-15"]
+    }
+  ]
+}
